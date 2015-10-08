@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace SportsStore.WebUI.Controllers
 {
+    [RoutePrefix("Account")]
     public class AccountController : Controller
     {
         IAuthProvider authProvider;
@@ -15,6 +16,11 @@ namespace SportsStore.WebUI.Controllers
         public AccountController(IAuthProvider auth)
         {
             authProvider = auth;
+        }
+
+        public ActionResult Index()
+        {
+            return RedirectToAction("Login");
         }
 
         public ViewResult Login()
@@ -41,6 +47,12 @@ namespace SportsStore.WebUI.Controllers
             {
                 return View();
             }
+        }
+
+        [Route("ChangePwd")]
+        public ActionResult SetPassword()
+        {
+            return Content("change password.");
         }
     }
 }
