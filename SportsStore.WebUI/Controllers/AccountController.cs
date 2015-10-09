@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace SportsStore.WebUI.Controllers
 {
@@ -35,7 +36,10 @@ namespace SportsStore.WebUI.Controllers
             {
                 if (authProvider.Authenticate(model.Username, model.Password))
                 {
-                    return Redirect(returnUrl ?? Url.Action("Index", "Admin"));
+                    FormsAuthentication.SetAuthCookie(model.Username, false);
+
+                    //return Redirect(returnUrl ?? Url.Action("Index", "Admin"));
+                    return RedirectToLocal(returnUrl);
                 }
                 else
                 {
@@ -53,6 +57,18 @@ namespace SportsStore.WebUI.Controllers
         public ActionResult SetPassword()
         {
             return Content("change password.");
+        }
+
+        private ActionResult RedirectToLocal(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home", null);
+            }
         }
     }
 }
